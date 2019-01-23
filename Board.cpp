@@ -48,9 +48,9 @@ void Board::Initialize()
 	{
 		for (int y = 0; y < m_height + 2; ++y)
 		{
-			m_tiles[x][y].GetIsMine = false;
-			m_tiles[x][y].GetNearMineNum = 0;
-			m_tiles[x][y].GetIsOpen = false;
+			m_tiles[x][y].SetNearMineNum(0);
+			m_tiles[x][y].SetMineFlag(false);
+			m_tiles[x][y].SetOpenFlag(false);
 		}
 	}
 
@@ -61,17 +61,17 @@ void Board::Initialize()
 		do {
 			x = rand() % m_width + 1;
 			y = rand() % m_height + 1;
-		} while (m_tiles[x][y].GetIsMine);
-		m_tiles[x][y].GetIsMine = true;
+		} while (m_tiles[x][y].GetIsMine());
+		m_tiles[x][y].SetMineFlag(true);
 
-		m_tiles[x - 1][y - 1].GetNearMineNum += 1;
-		m_tiles[x][y - 1].GetNearMineNum += 1;
-		m_tiles[x + 1][y - 1].GetNearMineNum += 1;
-		m_tiles[x - 1][y].GetNearMineNum += 1;
-		m_tiles[x + 1][y].GetNearMineNum += 1;
-		m_tiles[x - 1][y + 1].GetNearMineNum += 1;
-		m_tiles[x][y + 1].GetNearMineNum += 1;
-		m_tiles[x + 1][y + 1].GetNearMineNum += 1;
+		m_tiles[x - 1][y - 1].IncrimentNearMineNum();
+		m_tiles[x][y - 1].IncrimentNearMineNum();
+		m_tiles[x + 1][y - 1].IncrimentNearMineNum();
+		m_tiles[x - 1][y].IncrimentNearMineNum();
+		m_tiles[x + 1][y].IncrimentNearMineNum();
+		m_tiles[x - 1][y + 1].IncrimentNearMineNum();
+		m_tiles[x][y + 1].IncrimentNearMineNum();
+		m_tiles[x + 1][y + 1].IncrimentNearMineNum();
 	}
 }
 
@@ -91,11 +91,11 @@ void Board::_Open(int x, int y)
 	if (x < 1 || x > m_width || y < 1 || y > m_height)
 		return;
 
-	if (m_tiles[x][y].GetIsMine)
+	if (m_tiles[x][y].GetIsMine())
 		return;
 
-	m_tiles[x][y].GetIsOpen = true;
-	if (!m_tiles[x][y].GetIsMine && !m_tiles[x][y].GetNearMineNum)
+	m_tiles[x][y].SetOpenFlag(true);
+	if (!m_tiles[x][y].GetIsMine() && !m_tiles[x][y].GetNearMineNum())
 	{
 		_Open(x - 1, y - 1);
 		_Open(x, y - 1);
@@ -117,7 +117,7 @@ bool Board::CheckSweeped()
 	{
 		for (int y = 1; y <= m_height; ++y)
 		{
-			if (!m_tiles[x][y].GetIsMine && !m_tiles[x][y].GetIsOpen)
+			if (!m_tiles[x][y].GetIsMine() && !m_tiles[x][y].GetIsOpen())
 				return false;
 		}
 	}
@@ -137,14 +137,14 @@ void Board::Show()
 
 		for (int x = 1; x <= m_width; ++x)
 		{
-			if (!m_tiles[x][y].GetIsOpen)
+			if (!m_tiles[x][y].GetIsOpen())
 				cout << "¡";
-			else if (m_tiles[x][y].GetIsMine)
+			else if (m_tiles[x][y].GetIsMine())
 				cout << "¦";
-			else if (!m_tiles[x][y].GetNearMineNum)
+			else if (!m_tiles[x][y].GetNearMineNum())
 				cout << "E";
 			else
-				cout << " " << (int)m_tiles[x][y].GetNearMineNum;
+				cout << " " << m_tiles[x][y].GetNearMineNum();
 		}
 		cout << "\n";
 	}

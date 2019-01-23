@@ -14,7 +14,7 @@ class GameManager
 {
 private:
 	// データメンバの宣言
-	Board m_board;
+	Board* m_board;
 
 	// メンバ関数の宣言
 public:

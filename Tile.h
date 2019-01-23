@@ -26,10 +26,16 @@ public:
 	// 操作
 public:
 	void Open();
+	void IncrimentNearMineNum() { m_nearMineNum++; }
 	// ゲッター
 	bool GetIsOpen()const { return m_isOpen; }
 	bool GetIsMine()const { return m_isMine; }
 	int GetNearMineNum()const { return m_nearMineNum; }
+	// セッター
+	void SetOpenFlag(bool flag) { m_isOpen = flag; }
+	void SetMineFlag(bool flag) { m_isMine = flag; }
+	void SetNearMineNum(int num) { m_nearMineNum = num; }
+
 };
 
 #endif // INCLUDE_TileHeader
