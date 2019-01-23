@@ -12,6 +12,10 @@
 
 class Board
 {
+	// 定数
+public:
+	static const int NUM_MINE = 10;
+
 	// データメンバの宣言
 private:
 	Tile** m_tiles;
