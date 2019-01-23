@@ -1,39 +1,31 @@
 //=======================================================================================
-// Board.h
-// ボード関連のヘッダーファイル
+// Tile.h
+// タイル関連のヘッダーファイル
 // 制作：柳瀬 拓臣
 //=======================================================================================
 
 // 多重インクルードの防止
-#ifndef INCLUDE_BoardHeader
-#define INCLUDE_BoardHeader
+#ifndef INCLUDE_TileHeader
+#define INCLUDE_TileHeader
 
-#include "Tile.h"
-
-class Board
+class Tile
 {
 	// データメンバの宣言
 private:
-	Tile** m_tiles;
-	int m_width;
-	int m_height;
+	bool m_isOpen;
+	bool m_isMine;
+	int m_nearMineNum;
 
 	// メンバ関数の宣言
 public:
 	// コンストラクタ
-	Board();
+	Tile();
 	// デストラクタ
-	~Board();
+	~Tile();
 
 	// 操作
 public:
-	void Initialize();
-	void Open(int x, int y);
-	bool CheckSweeped();
-	void Show();
-
-private:
-	void _Open(int x, int y);
+	void Open();
 };
 
-#endif // INCLUDE_BoardHeader
+#endif // INCLUDE_TileHeader

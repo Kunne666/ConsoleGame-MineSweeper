@@ -10,7 +10,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <string>
-#include "Board.h"
+#include "GameManager.h"
 
 using namespace std;
 
@@ -41,7 +41,7 @@ int main()
 		while (!sweeped) {
 
 			board->BoardRender();
-			
+
 			int x, y;
 			for (;;) {
 				cout << "À•W‚ð“ü—Í‚µ‚Ä‚­‚¾‚³‚¢B [a-i][1-9]\n";
@@ -71,7 +71,7 @@ int main()
 			sweeped = board->CheckSweeped();
 		}
 		board->BoardRender();
-		if (sweeped==true)
+		if (sweeped == true)
 			cout << "Good-Job !!!  you've sweeped all Mines in success.\n";
 		else
 			cout << "Oops !!! You've stepped on a Mine...\n\n";

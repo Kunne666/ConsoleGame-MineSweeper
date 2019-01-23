@@ -1,39 +1,34 @@
 //=======================================================================================
-// Board.h
-// ボード関連のヘッダーファイル
+// GameManager.h
+// ゲーム管理のヘッダーファイル
 // 制作：柳瀬 拓臣
 //=======================================================================================
 
 // 多重インクルードの防止
-#ifndef INCLUDE_BoardHeader
-#define INCLUDE_BoardHeader
+#ifndef INCLUDE_GameManagerHeader
+#define INCLUDE_GameManagerHeader
 
-#include "Tile.h"
+#include "Board.h"
 
-class Board
+class GameManager
 {
-	// データメンバの宣言
 private:
-	Tile** m_tiles;
-	int m_width;
-	int m_height;
+	// データメンバの宣言
+	Board m_board;
 
 	// メンバ関数の宣言
 public:
 	// コンストラクタ
-	Board();
+	GameManager();
 	// デストラクタ
-	~Board();
+	~GameManager();
 
 	// 操作
 public:
 	void Initialize();
-	void Open(int x, int y);
-	bool CheckSweeped();
-	void Show();
-
-private:
-	void _Open(int x, int y);
+	void Update();
+	void Render();
 };
 
-#endif // INCLUDE_BoardHeader
+#endif // INCLUDE_GameManagerHeader
+
