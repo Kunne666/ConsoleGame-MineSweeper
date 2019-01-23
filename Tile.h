@@ -26,6 +26,10 @@ public:
 	// ‘€ì
 public:
 	void Open();
+	// ƒQƒbƒ^[
+	bool GetIsOpen()const { return m_isOpen; }
+	bool GetIsMine()const { return m_isMine; }
+	int GetNearMineNum()const { return m_nearMineNum; }
 };
 
 #endif // INCLUDE_TileHeader

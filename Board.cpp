@@ -11,7 +11,7 @@
 
 using namespace std;
 
-const char *digitStr[] =
+const char* digitStr[] =
 {
 	"１", "２", "３", "４", "５", "６", "７", "８", "９",
 };
@@ -21,7 +21,13 @@ const char *digitStr[] =
 //================================================================
 Board::Board()
 {
+	this->m_width = 9;
+	this->m_height = 9;
 
+	Tile** m_tiles = new Tile*[m_width + 2];
+
+	for (int i = 0; i < m_width; i++)
+		m_tiles[i] = new Tile[m_height + 2];
 }
 
 //================================================================
@@ -29,7 +35,8 @@ Board::Board()
 //================================================================
 Board::~Board()
 {
-
+	for (int i = 0; i < m_width + 2; i++)
+		delete m_tiles[i];
 }
 
 //================================================================
@@ -37,23 +44,68 @@ Board::~Board()
 //================================================================
 void Board::Initialize()
 {
+	for (int x = 0; x < m_width + 2; ++x)
+	{
+		for (int y = 0; y < m_height + 2; ++y)
+		{
+			m_tiles[x][y].GetIsMine = false;
+			m_tiles[x][y].GetNearMineNum = 0;
+			m_tiles[x][y].GetIsOpen = false;
+		}
+	}
 
+	for (int i = 0; i < NUM_MINE; ++i)
+	{
+		int x, y;
+
+		do {
+			x = rand() % m_width + 1;
+			y = rand() % m_height + 1;
+		} while (m_tiles[x][y].GetIsMine);
+		m_tiles[x][y].GetIsMine = true;
+
+		m_tiles[x - 1][y - 1].GetNearMineNum += 1;
+		m_tiles[x][y - 1].GetNearMineNum += 1;
+		m_tiles[x + 1][y - 1].GetNearMineNum += 1;
+		m_tiles[x - 1][y].GetNearMineNum += 1;
+		m_tiles[x + 1][y].GetNearMineNum += 1;
+		m_tiles[x - 1][y + 1].GetNearMineNum += 1;
+		m_tiles[x][y + 1].GetNearMineNum += 1;
+		m_tiles[x + 1][y + 1].GetNearMineNum += 1;
+	}
 }
 
 //================================================================
-// 再帰する関数の最初の呼び出し
+// マスを開く：再帰する関数の最初の呼び出し
 //================================================================
 void Board::Open(int x, int y)
 {
-
+	_Open(x, y);
 }
 
 //================================================================
-// 再帰
+// マスを開く：再帰
 //================================================================
 void Board::_Open(int x, int y)
 {
+	if (x < 1 || x > m_width || y < 1 || y > m_height)
+		return;
 
+	if (m_tiles[x][y].GetIsMine)
+		return;
+
+	m_tiles[x][y].GetIsOpen = true;
+	if (!m_tiles[x][y].GetIsMine && !m_tiles[x][y].GetNearMineNum)
+	{
+		_Open(x - 1, y - 1);
+		_Open(x, y - 1);
+		_Open(x + 1, y - 1);
+		_Open(x - 1, y);
+		_Open(x + 1, y);
+		_Open(x - 1, y + 1);
+		_Open(x, y + 1);
+		_Open(x + 1, y + 1);
+	}
 }
 
 //================================================================
@@ -61,7 +113,15 @@ void Board::_Open(int x, int y)
 //================================================================
 bool Board::CheckSweeped()
 {
-
+	for (int x = 1; x <= m_width; ++x)
+	{
+		for (int y = 1; y <= m_height; ++y)
+		{
+			if (!m_tiles[x][y].GetIsMine && !m_tiles[x][y].GetIsOpen)
+				return false;
+		}
+	}
+	return true;
 }
 
 //================================================================
@@ -69,98 +129,26 @@ bool Board::CheckSweeped()
 //================================================================
 void Board::Show()
 {
+	cout << "\n　ａｂｃｄｅｆｇｈｉ\n";
 
+	for (int y = 1; y <= m_height; ++y)
+	{
+		cout << digitStr[y - 1];
+
+		for (int x = 1; x <= m_width; ++x)
+		{
+			if (!m_tiles[x][y].GetIsOpen)
+				cout << "■";
+			else if (m_tiles[x][y].GetIsMine)
+				cout << "※";
+			else if (!m_tiles[x][y].GetNearMineNum)
+				cout << "・";
+			else
+				cout << " " << (int)m_tiles[x][y].GetNearMineNum;
+		}
+		cout << "\n";
+	}
+	cout << "\n";
 }
-
-////================================================================
-//// ボードの初期化
-////================================================================
-//void Board::InitializeBoard()
-//{
-//	for (int x = 0; x < BOARD_WIDTH + 2; ++x) {
-//		for (int y = 0; y < BOARD_HEIGHT + 2; ++y) {
-//			m_bom[x][y] = false;
-//			m_borderedBom[x][y] = 0;
-//			m_open[x][y] = false;
-//		}
-//	}
-//
-//	for (int i = 0; i < NUM_BOM; ++i) {
-//		int x, y;
-//		do {
-//			x = rand() % BOARD_WIDTH + 1;
-//			y = rand() % BOARD_HEIGHT + 1;
-//		} while (m_bom[x][y]);
-//		m_bom[x][y] = true;
-//
-//		m_borderedBom[x - 1][y - 1] += 1;
-//		m_borderedBom[x][y - 1] += 1;
-//		m_borderedBom[x + 1][y - 1] += 1;
-//		m_borderedBom[x - 1][y] += 1;
-//		m_borderedBom[x + 1][y] += 1;
-//		m_borderedBom[x - 1][y + 1] += 1;
-//		m_borderedBom[x][y + 1] += 1;
-//		m_borderedBom[x + 1][y + 1] += 1;
-//	}
-//}
-//
-////================================================================
-//// マスを開く
-////================================================================
-//void Board::OpenSquares(int x, int y)
-//{
-//	if (x < 1 || x > BOARD_WIDTH || y < 1 || y > BOARD_HEIGHT)
-//		return;
-//	if (m_open[x][y])
-//		return;
-//	m_open[x][y] = true;
-//	if (!m_bom[x][y] && !m_borderedBom[x][y]) {
-//		OpenSquares(x - 1, y - 1);
-//		OpenSquares(x, y - 1);
-//		OpenSquares(x + 1, y - 1);
-//		OpenSquares(x - 1, y);
-//		OpenSquares(x + 1, y);
-//		OpenSquares(x - 1, y + 1);
-//		OpenSquares(x, y + 1);
-//		OpenSquares(x + 1, y + 1);
-//	}
-//}
-//
-////================================================================
-//// オープンチェック
-////================================================================
-//bool Board::CheckSweeped()
-//{
-//	for (int x = 1; x <= BOARD_WIDTH; ++x) {
-//		for (int y = 1; y <= BOARD_HEIGHT; ++y) {
-//			if (!m_bom[x][y] && !m_open[x][y])
-//				return false;
-//		}
-//	}
-//	return true;
-//}
-//
-////================================================================
-//// ボードを描画
-////================================================================
-//void Board::BoardRender()
-//{
-//	cout << "\n　ａｂｃｄｅｆｇｈｉ\n";
-//	for (int y = 1; y <= BOARD_HEIGHT; ++y) {
-//		cout << digitStr[y - 1];
-//		for (int x = 1; x <= BOARD_WIDTH; ++x) {
-//			if (!m_open[x][y])
-//				cout << "■";
-//			else if (m_bom[x][y])
-//				cout << "※";
-//			else if (!m_borderedBom[x][y])
-//				cout << "・";
-//			else
-//				cout << " " << (int)m_borderedBom[x][y];
-//		}
-//		cout << "\n";
-//	}
-//	cout << "\n";
-//}
 
 
