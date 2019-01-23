@@ -39,6 +39,8 @@ public:
 	void Open(int x, int y);
 	bool CheckSweeped();
 	void Show();
+	// ÉQÉbÉ^Å[
+	bool GetIsMine(int x, int y);
 
 private:
 	void _Open(int x, int y);

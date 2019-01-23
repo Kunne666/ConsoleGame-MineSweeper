@@ -31,7 +31,6 @@ int main()
 
 	GameManager* game = new GameManager;
 
-	game->Initialize();
 	game->Update();
 
 	// “ü—Í‘Ò‚¿

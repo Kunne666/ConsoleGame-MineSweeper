@@ -45,6 +45,8 @@ void GameManager::Update()
 
 	for (;;)
 	{
+		m_board->Initialize();
+
 		bool sweeped = false;
 
 		while (!sweeped)
@@ -55,7 +57,7 @@ void GameManager::Update()
 
 			for (;;)
 			{
-				cout << "開く座標を入力してください。" << endl;
+				cout << "座標を入力してください。" << endl;
 				cout << "範囲 [a - i] [1 - 9]" << endl;
 				cin >> coordinate;
 
@@ -79,11 +81,8 @@ void GameManager::Update()
 
 			m_board->Open(x, y);
 
-			//================================================================
-			// if (m_mine[x][y])
-			if (false)
+			if (m_board->GetIsMine(x,y))
 				break;
-			//================================================================
 
 			sweeped = m_board->CheckSweeped();
 		}
@@ -94,6 +93,12 @@ void GameManager::Update()
 			cout << "成功！" << endl;
 		else
 			cout << "失敗！" << endl;
+			
+		cout << "もう一度プレイしますか？" << endl;
+		cout << "はい[Y] / いいえ[N]" << endl;
+		cin >> coordinate;
+		if (coordinate == "n" || coordinate == "N")
+			break;
 	}
 }
 

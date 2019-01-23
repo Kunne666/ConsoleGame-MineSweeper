@@ -151,4 +151,12 @@ void Board::Show()
 	cout << "\n";
 }
 
-
+//================================================================
+// 
+//================================================================
+bool Board::GetIsMine(int x, int y)
+{
+	if (m_tiles[x][y].GetIsMine() == true)
+		return true;
+	return false;
+}
