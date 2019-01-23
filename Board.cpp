@@ -24,9 +24,9 @@ Board::Board()
 	this->m_width = 9;
 	this->m_height = 9;
 
-	Tile** m_tiles = new Tile*[m_width + 2];
+	m_tiles = new Tile*[m_width + 2];
 
-	for (int i = 0; i < m_width; i++)
+	for (int i = 0; i < m_width + 2; i++)
 		m_tiles[i] = new Tile[m_height + 2];
 }
 
