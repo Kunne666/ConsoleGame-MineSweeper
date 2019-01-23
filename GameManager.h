@@ -10,8 +10,11 @@
 
 #include "Board.h"
 
-class GameManager
+class GameManager :public Singleton<GameManager>
 {
+public:
+	friend class Singleton<GameManager>;
+
 private:
 	// データメンバの宣言
 	Board* m_board;

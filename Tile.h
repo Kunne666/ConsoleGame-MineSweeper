@@ -35,7 +35,6 @@ public:
 	void SetOpenFlag(bool flag) { m_isOpen = flag; }
 	void SetMineFlag(bool flag) { m_isMine = flag; }
 	void SetNearMineNum(int num) { m_nearMineNum = num; }
-
 };
 
 #endif // INCLUDE_TileHeader

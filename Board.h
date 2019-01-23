@@ -9,9 +9,13 @@
 #define INCLUDE_BoardHeader
 
 #include "Tile.h"
+#include "Singleton.h"
 
-class Board
+class Board:public Singleton<Board>
 {
+public:
+	friend class Singleton<Board>;
+
 	// ’è”
 public:
 	static const int NUM_MINE = 10;
