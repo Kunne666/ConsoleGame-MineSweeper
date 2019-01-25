@@ -22,7 +22,7 @@ public:
 
 	// データメンバの宣言
 private:
-	Tile** m_tiles;
+	Tile*** m_tiles;
 	int m_width;
 	int m_height;
 
@@ -39,6 +39,7 @@ public:
 	void Open(int x, int y);
 	bool CheckSweeped();
 	void Show();
+	void Show_Debug();
 	// ゲッター
 	bool GetIsMine(int x, int y);
 

@@ -10,6 +10,7 @@
 #include <cstdlib>
 #include <cassert>
 #include <string>
+#include "Console.h"
 #include "GameManager.h"
 
 using namespace std;
@@ -29,12 +30,17 @@ int main()
 	// —”ƒV[ƒh‚Ì¶¬
 	srand(static_cast<unsigned int>(time(nullptr)));
 
+	SetBackColor(COLOR_YELLOW);
+	SetScreenSize(30, 30);
+
 	GameManager* game = new GameManager;
 
 	game->Update();
 
 	// “ü—Í‘Ò‚¿
 	cin.get();
+
+	delete game;
 
 	return 0;
 }
